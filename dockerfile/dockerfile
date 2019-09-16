@@ -1,0 +1,7 @@
+FROM zerogjoe/mssql-python3-pyodbc
+RUN mkdir /docker
+WORKDIR /docker
+ADD requirements.txt /docker
+RUN pip install -r /docker/requirements.txt
+ADD EngineCore.py /docker
+CMD /usr/bin/python3.5 EngineCore.py
