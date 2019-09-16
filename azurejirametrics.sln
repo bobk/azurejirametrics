@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{72F8DF28-1D4
 	ProjectSection(SolutionItems) = preProject
 		sql\sqlin.cmd = sql\sqlin.cmd
 		sql\sqlout.cmd = sql\sqlout.cmd
+		sql\sqlout.sql = sql\sqlout.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dockerfile", "dockerfile", "{9D4661CC-E6EB-4DB0-92BB-66A88EA1BC20}"

@@ -1,1 +1,1 @@
-mssql-scripter -S WS2012-SRV-VM2 -d azurejirametrics -U azure-test -P azure-test --script-drop-create --include-objects dbo.* -f c:\temp\out.sql
+sqlcmd.exe -S %AZUREJIRAMETRICS_SQLSERVER% -d %AZUREJIRAMETRICS_SQLDB% -U %AZUREJIRAMETRICS_SQLUSERNAME% -P %AZUREJIRAMETRICS_SQLPASSWORD% --i .\sqlout.sql
