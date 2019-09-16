@@ -7,11 +7,16 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "core", "Core\core.pyproj", 
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "tests", "Tests\tests.pyproj", "{91499CEF-F20C-48A6-8000-0ED6535DB741}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{01EE4F2B-68FE-43B2-9831-6ED8C4A354F6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{72F8DF28-1D4A-4308-8EE7-A6A2C2FB6EE0}"
+	ProjectSection(SolutionItems) = preProject
+		sql\sqlin.cmd = sql\sqlin.cmd
+		sql\sqlout.cmd = sql\sqlout.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dockerfile", "dockerfile", "{9D4661CC-E6EB-4DB0-92BB-66A88EA1BC20}"
 	ProjectSection(SolutionItems) = preProject
 		dockerfile\dockerbuildrun.cmd = dockerfile\dockerbuildrun.cmd
 		dockerfile\dockerfile = dockerfile\dockerfile
-		Core\requirements.txt = Core\requirements.txt
 	EndProjectSection
 EndProject
 Global
