@@ -4,7 +4,7 @@ azurejirametrics
 
 ## Description
 
-[See PowerPoint presentation here (in \docs subdir)](https://github.com/bobk/azurejirametrics/blob/master/docs/Simple%20Jira%20Agile%20Metrics%20via%20Python%20and%20Azure.pptx)
+[See PowerPoint presentation here (in \docs subdir)](https://github.com/bobk/azurejirametrics/blob/master/docs)
 
 This example code set demonstrates easy access to the Jira API via Python and the creation of simple MS SQL tables from that API to generate Jira Agile metrics.
 
