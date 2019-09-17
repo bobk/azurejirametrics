@@ -61,3 +61,8 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+# bobk - change to override language detection, by telling it to ignore the SQL scripts
+sql/* linguist-vendored
+
+
