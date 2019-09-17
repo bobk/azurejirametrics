@@ -27,4 +27,3 @@ This example code set demonstrates easy access to the Jira API via Python and th
 This project is licensed under the MIT License - see the LICENSE.md file for details
 
 ## Acknowledgments
-
