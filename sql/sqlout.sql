@@ -1,36 +1,31 @@
 ﻿USE [azurejirametrics]
 GO
-/****** Object:  StoredProcedure [dbo].[metrics_calcWIPMAX]    Script Date: 9/16/2019 3:07:35 PM ******/
-DROP PROCEDURE [dbo].[metrics_calcWIPMAX]
-GO
-/****** Object:  StoredProcedure [dbo].[metrics_calcLEADTIMEAVG]    Script Date: 9/16/2019 3:07:35 PM ******/
-DROP PROCEDURE [dbo].[metrics_calcLEADTIMEAVG]
-GO
-/****** Object:  StoredProcedure [dbo].[metrics_calcISSUESTAKINGNDAYS]    Script Date: 9/16/2019 3:07:35 PM ******/
-DROP PROCEDURE [dbo].[metrics_calcISSUESTAKINGNDAYS]
-GO
-/****** Object:  StoredProcedure [dbo].[metrics_calcISSUESREQUIRINGREWORK]    Script Date: 9/16/2019 3:07:35 PM ******/
-DROP PROCEDURE [dbo].[metrics_calcISSUESREQUIRINGREWORK]
-GO
-/****** Object:  StoredProcedure [dbo].[metrics_calcISSUESNOTUPDATEDNDAYS]    Script Date: 9/16/2019 3:07:35 PM ******/
-DROP PROCEDURE [dbo].[metrics_calcISSUESNOTUPDATEDNDAYS]
-GO
-/****** Object:  Table [dbo].[jira_servers]    Script Date: 9/16/2019 3:07:35 PM ******/
-DROP TABLE [dbo].[jira_servers]
-GO
-/****** Object:  Table [dbo].[jira_projects]    Script Date: 9/16/2019 3:07:35 PM ******/
-DROP TABLE [dbo].[jira_projects]
-GO
-/****** Object:  Table [dbo].[jira_metrics]    Script Date: 9/16/2019 3:07:35 PM ******/
-DROP TABLE [dbo].[jira_metrics]
-GO
-/****** Object:  Table [dbo].[jira_issues]    Script Date: 9/16/2019 3:07:35 PM ******/
+/****** Object:  Table [dbo].[jira_issues]    Script Date: 9/20/2019 12:14:54 PM ******/
 DROP TABLE [dbo].[jira_issues]
 GO
-/****** Object:  Table [dbo].[jira_history]    Script Date: 9/16/2019 3:07:35 PM ******/
+/****** Object:  Table [dbo].[jira_issues]    Script Date: 9/20/2019 12:14:54 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[jira_issues](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[issue_server_id] [int] NOT NULL,
+	[issue_project_name] [nvarchar](50) NOT NULL,
+	[issue_issuekey] [nvarchar](50) NOT NULL,
+	[issue_status] [nvarchar](50) NOT NULL,
+	[issue_assignee] [nvarchar](50) NOT NULL,
+	[issue_summary] [nvarchar](500) NOT NULL,
+	[issue_datecreated] [datetime2](7) NOT NULL,
+	[issue_dateupdated] [datetime2](7) NOT NULL
+) ON [PRIMARY]
+GO
+﻿USE [azurejirametrics]
+GO
+/****** Object:  Table [dbo].[jira_history]    Script Date: 9/20/2019 12:15:05 PM ******/
 DROP TABLE [dbo].[jira_history]
 GO
-/****** Object:  Table [dbo].[jira_history]    Script Date: 9/16/2019 3:07:35 PM ******/
+/****** Object:  Table [dbo].[jira_history]    Script Date: 9/20/2019 12:15:05 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -50,24 +45,12 @@ CREATE TABLE [dbo].[jira_history](
 	[history_tostring] [nvarchar](500) NOT NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[jira_issues]    Script Date: 9/16/2019 3:07:35 PM ******/
-SET ANSI_NULLS ON
+﻿USE [azurejirametrics]
 GO
-SET QUOTED_IDENTIFIER ON
+/****** Object:  Table [dbo].[jira_metrics]    Script Date: 9/20/2019 12:15:16 PM ******/
+DROP TABLE [dbo].[jira_metrics]
 GO
-CREATE TABLE [dbo].[jira_issues](
-	[id] [int] IDENTITY(1,1) NOT NULL,
-	[issue_server_id] [int] NOT NULL,
-	[issue_project_name] [nvarchar](50) NOT NULL,
-	[issue_issuekey] [nvarchar](50) NOT NULL,
-	[issue_status] [nvarchar](50) NOT NULL,
-	[issue_assignee] [nvarchar](50) NOT NULL,
-	[issue_summary] [nvarchar](500) NOT NULL,
-	[issue_datecreated] [datetime2](7) NOT NULL,
-	[issue_dateupdated] [datetime2](7) NOT NULL
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[jira_metrics]    Script Date: 9/16/2019 3:07:35 PM ******/
+/****** Object:  Table [dbo].[jira_metrics]    Script Date: 9/20/2019 12:15:16 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -84,31 +67,12 @@ CREATE TABLE [dbo].[jira_metrics](
 	[metrics_date] [datetime2](7) NOT NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[jira_projects]    Script Date: 9/16/2019 3:07:35 PM ******/
-SET ANSI_NULLS ON
+﻿USE [azurejirametrics]
 GO
-SET QUOTED_IDENTIFIER ON
+/****** Object:  StoredProcedure [dbo].[metrics_calcISSUESNOTUPDATEDNDAYS]    Script Date: 9/20/2019 12:15:26 PM ******/
+DROP PROCEDURE [dbo].[metrics_calcISSUESNOTUPDATEDNDAYS]
 GO
-CREATE TABLE [dbo].[jira_projects](
-	[jira_server_id] [int] NOT NULL,
-	[jira_project_name] [nvarchar](50) NOT NULL
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[jira_servers]    Script Date: 9/16/2019 3:07:35 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[jira_servers](
-	[jira_server_id] [int] IDENTITY(1,1) NOT NULL,
-	[jira_server_url] [nvarchar](500) NOT NULL,
-	[jira_server_status] [nvarchar](50) NOT NULL,
-	[jira_server_customer_name] [nvarchar](50) NOT NULL,
-	[jira_server_username] [nvarchar](50) NOT NULL,
-	[jira_server_apitoken] [nvarchar](50) NOT NULL
-) ON [PRIMARY]
-GO
-/****** Object:  StoredProcedure [dbo].[metrics_calcISSUESNOTUPDATEDNDAYS]    Script Date: 9/16/2019 3:07:36 PM ******/
+/****** Object:  StoredProcedure [dbo].[metrics_calcISSUESNOTUPDATEDNDAYS]    Script Date: 9/20/2019 12:15:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -148,7 +112,12 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[metrics_calcISSUESREQUIRINGREWORK]    Script Date: 9/16/2019 3:07:36 PM ******/
+﻿USE [azurejirametrics]
+GO
+/****** Object:  StoredProcedure [dbo].[metrics_calcISSUESREQUIRINGREWORK]    Script Date: 9/20/2019 12:15:37 PM ******/
+DROP PROCEDURE [dbo].[metrics_calcISSUESREQUIRINGREWORK]
+GO
+/****** Object:  StoredProcedure [dbo].[metrics_calcISSUESREQUIRINGREWORK]    Script Date: 9/20/2019 12:15:37 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -185,7 +154,12 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[metrics_calcISSUESTAKINGNDAYS]    Script Date: 9/16/2019 3:07:36 PM ******/
+﻿USE [azurejirametrics]
+GO
+/****** Object:  StoredProcedure [dbo].[metrics_calcISSUESTAKINGNDAYS]    Script Date: 9/20/2019 12:15:47 PM ******/
+DROP PROCEDURE [dbo].[metrics_calcISSUESTAKINGNDAYS]
+GO
+/****** Object:  StoredProcedure [dbo].[metrics_calcISSUESTAKINGNDAYS]    Script Date: 9/20/2019 12:15:47 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -225,7 +199,12 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[metrics_calcLEADTIMEAVG]    Script Date: 9/16/2019 3:07:36 PM ******/
+﻿USE [azurejirametrics]
+GO
+/****** Object:  StoredProcedure [dbo].[metrics_calcLEADTIMEAVG]    Script Date: 9/20/2019 12:15:57 PM ******/
+DROP PROCEDURE [dbo].[metrics_calcLEADTIMEAVG]
+GO
+/****** Object:  StoredProcedure [dbo].[metrics_calcLEADTIMEAVG]    Script Date: 9/20/2019 12:15:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -278,7 +257,12 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[metrics_calcWIPMAX]    Script Date: 9/16/2019 3:07:36 PM ******/
+﻿USE [azurejirametrics]
+GO
+/****** Object:  StoredProcedure [dbo].[metrics_calcWIPMAX]    Script Date: 9/20/2019 12:16:08 PM ******/
+DROP PROCEDURE [dbo].[metrics_calcWIPMAX]
+GO
+/****** Object:  StoredProcedure [dbo].[metrics_calcWIPMAX]    Script Date: 9/20/2019 12:16:08 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

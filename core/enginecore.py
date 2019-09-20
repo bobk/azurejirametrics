@@ -27,7 +27,7 @@ def CSVformat(str_in):
 	returns:
 	string: the string with characters removed
 	"""
-	str_out = str(str_in).strip().replace(',', '\\,')
+	str_out = str(str_in).strip().replace(",", "\\,")
 
 	return str_out
 
@@ -42,29 +42,25 @@ def JIRATOSQLdatetimeformat(datetime_in):
 	returns:
 	string: the string with characters removed
 	"""
-	datetime_out = datetime.strptime(datetime_in, "%Y-%m-%dT%H:%M:%S.%f%z").strftime('%Y-%m-%d %H:%M:%S')
+	datetime_out = datetime.strptime(datetime_in, "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%d %H:%M:%S")
 
 	return datetime_out
 
-#   the following environment variables need to be defined prior to executing the script
+#   the following environment variable needs to be defined prior to executing the script
 #   using SQL authentication was done simply for demo purposes
 #
 #   examples (for Windows):
-#       set AZUREJIRAMETRICS_SQLSERVER=sqlserver1
-#       set AZUREJIRAMETRICS_SQLDB=sqljiradb
-#       set AZUREJIRAMETRICS_SQLUSERNAME=jirauser
-#       set AZUREJIRAMETRICS_SQLPASSWORD=mypassword
+#       set AZUREJIRAMETRICS_CONNSTRING="DRIVER={ODBC Driver 17 for SQL Server};SERVER=myserver;DATABASE=mydatabase;UID=myuid;PWD=mypwd"
+#
+#   the above envvar is also used by the sqlout.cmd script that applies SQL schema changes to the target DB as part of Azure deployment
 #
 #   TODO: this method of storing credentials is not the best - SQL integrated authentication is a better choice
-sqlserver = os.environ['AZUREJIRAMETRICS_SQLSERVER']
-sqldb = os.environ['AZUREJIRAMETRICS_SQLDB']
-sqlusername = os.environ['AZUREJIRAMETRICS_SQLUSERNAME']
-sqlpassword = os.environ['AZUREJIRAMETRICS_SQLPASSWORD']
+connstring = "DRIVER={ODBC Driver 17 for SQL Server};" + os.environ["AZUREJIRAMETRICS_CONNSTRING"]
 
 #   connect to the SQL DB in order to retrieve Jira server/project info - that info should have 
 #   already been populated manually into those tables (jira_servers and jira_projects)
 #   TODO: add simple error checking/exception handling for blank/invalid values for the above
-cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + sqlserver + ';DATABASE=' + sqldb + ';UID=' + sqlusername + ';PWD=' + sqlpassword + ';')
+cnxn = pyodbc.connect(connstring)
 
 #   now first start iterating through list of servers (contain 'ACTIVE' in jira_server_status column)
 #   TODO: add error checking for blank/missing values, or servers that do not exist, etc. 
@@ -74,23 +70,23 @@ serverrows = servercursor.fetchall()
 for serverrow in serverrows:
 
 #   for each Jira target server, create a connection object
-	options = { 'server':serverrow.jira_server_url }
+	options = { "server":serverrow.jira_server_url }
 	jira = JIRA(options, basic_auth=(serverrow.jira_server_username, serverrow.jira_server_apitoken))    # a username/password tuple
 
 #   then get the list of the (identified) projects on that server, and iterate through each project	
 	projectcursor = cnxn.cursor()
-	projectcursor.execute('SELECT * from jira_projects where (jira_server_id = ' + str(serverrow.jira_server_id) + ')')
+	projectcursor.execute("SELECT * from jira_projects where (jira_server_id = " + str(serverrow.jira_server_id) + ")")
 	projectrows = projectcursor.fetchall()
 	for projectrow in projectrows:
 
 #   for each Jira project, first get all the issues for that project (default behavior of .search_issues() is to get all issues, in batches, due to Jira REST requirements)
 #   can be overridden with maxResults=N
-		issues = jira.search_issues('project=' + projectrow.jira_project_name, expand='changelog',startAt=0)
+		issues = jira.search_issues("project=" + projectrow.jira_project_name, expand="changelog",startAt=0)
 
 #	once we have that list of issues for that project, delete all of the existing issues and history in the DB tables, for that project
 #   TODO: error checking around "did we actually retrieve a valid set of issues, before we delete existing?"
 		tablecursor = cnxn.cursor()
-		tablecursor.execute('DELETE from dbo.jira_issues where (issue_project_name=\'' + projectrow.jira_project_name + '\' and issue_server_id=\'' + str(serverrow.jira_server_id) + '\')')
+		tablecursor.execute("DELETE from dbo.jira_issues where (issue_project_name=\'" + projectrow.jira_project_name + "\' and issue_server_id=\'" + str(serverrow.jira_server_id) + "\')")
 		cnxn.commit()
 		tablecursor.execute('DELETE from dbo.jira_history where (history_project_name=\'' + projectrow.jira_project_name + '\' and history_server_id=\'' + str(serverrow.jira_server_id) + '\')')
 		cnxn.commit()
