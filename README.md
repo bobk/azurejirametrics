@@ -1,4 +1,4 @@
-# Project Title
+# azurejirametrics
 
 **Simple Jira Agile Metrics via Python and SQL (and Azure)**
 
