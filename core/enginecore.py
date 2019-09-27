@@ -10,7 +10,7 @@
 #    - check the above repo for further documentation, DDL and SP scripts, and related Azure ARM templates
 #
 
-from jira import JIRA
+from jira import JIRA 
 import pyodbc
 import time
 from datetime import datetime
