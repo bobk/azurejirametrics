@@ -4,7 +4,7 @@
 
 ## Description
 
-This example code set demonstrates easy access to the Jira API via Python (jira-python) and the creation of simple MS SQL tables using that API to generate useful Jira Agile metrics via simple SQL queries and joins.
+This example code set demonstrates easy access to the Jira API via Python (jira-python) and the creation of simple MS SQL tables using that API to generate useful Jira Agile metrics via simple SQL queries and joins. Information on running the solution in Microsoft Azure is also included.
 
 [See PowerPoint presentation here (in \docs subdir)](https://github.com/bobk/azurejirametrics/blob/master/docs)
 
