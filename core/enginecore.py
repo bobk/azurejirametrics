@@ -7,6 +7,7 @@
 #    - storage of multiple Jira servers, credentials and projects in simple SQL DB tables
 #    - iteration through those Jira projects to collect various basic data sets
 #    - execution of SQL SPs that create useful metrics based on those data sets
+#    - conversion of timestamps as needed
 #    - check the above repo for further documentation, DDL and SP scripts, and related Azure ARM templates
 #
 
