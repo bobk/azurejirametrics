@@ -72,7 +72,9 @@ for serverrow in serverrows:
 
 #   for each Jira target server, create a connection object
 	options = { "server":serverrow.jira_server_url }
-	jira = JIRA(options, basic_auth=(serverrow.jira_server_username, serverrow.jira_server_apitoken))    # a username/password tuple
+	jira = JIRA(options, basic_auth=(serverrow.jira_server_username, serverrow.jira_server_apitoken))    # a username/password tupl
+#	for Jira Cloud, it's a user email plus an API token generated under that user (for Jira Cloud you can't use login names)
+#   for Jira Server, it's a login name plus the password for that login (Jira Server does not support API tokens)
 	print("connecting to server " + serverrow.jira_server_url + " as " + serverrow.jira_server_username)
 
 #   then get the list of the (identified) projects on that server, and iterate through each project	
