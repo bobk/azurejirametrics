@@ -73,6 +73,7 @@ for serverrow in serverrows:
 #   for each Jira target server, create a connection object
 	options = { "server":serverrow.jira_server_url }
 	jira = JIRA(options, basic_auth=(serverrow.jira_server_username, serverrow.jira_server_apitoken))    # a username/password tuple
+	print("connecting to server " + serverrow.jira_server_url + " as " + serverrow.jira_server_username)
 
 #   then get the list of the (identified) projects on that server, and iterate through each project	
 	projectcursor = cnxn.cursor()
@@ -94,7 +95,7 @@ for serverrow in serverrows:
 
 #   now iterate through all issues, printing the fields for each one (TODO: replace print statements with calls to logging.* later)
 		for issue in issues:
-			print(CSVformat(issue.fields.project), end=",")
+			print("  " + CSVformat(issue.fields.project), end=",")
 			print(CSVformat(issue), end=",")
 			print(CSVformat(issue.fields.issuetype), end=",")
 			print(CSVformat(issue.fields.summary), end=",")
@@ -116,7 +117,6 @@ for serverrow in serverrows:
 			print(str(created), end=",")
 			updated = JIRATOSQLdatetimeformat(issue.fields.updated)
 			print(str(updated))
-			print("END")
 
 #	insert each issue into target SQL DB using standard SQL DML INSERT
 #   assumes a CONVERT()able SQL date format like datetimeoffset
@@ -130,7 +130,7 @@ for serverrow in serverrows:
 			for history in changelog.histories:
 				for item in history.items:
 #   again printing the key fields for each one (TODO: replace print statements with calls to logging.* later)
-					print('   ' + JIRATOSQLdatetimeformat(history.created) + ':   ' + str(history.author.name) + ' changed ' + item.field.upper() + ' from ' + str(item.fromString) + ' to ' + str(item.toString))
+					print('    ' + JIRATOSQLdatetimeformat(history.created) + ':   ' + str(history.author.name) + ' changed ' + item.field.upper() + ' from ' + str(item.fromString) + ' to ' + str(item.toString))
 					tablecursor.execute('INSERT into dbo.jira_history values (' + str(serverrow.jira_server_id) + ',\'' + CSVformat(issue.fields.project) + '\',\'' + 
 																				  str(history.id) + '\',\'' + CSVformat(history.author.name) + '\',\'' + CSVformat(issue) + '\',\'' + JIRATOSQLdatetimeformat(history.created) + '\',\'' + 
 																				  CSVformat(item.field.upper()) + '\',\'' + CSVformat(str(item.fromString)) + '\',\'' + 
