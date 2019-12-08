@@ -108,8 +108,6 @@ for serverrow in serverrows:
 			print(CSVformat(issue.fields.creator), end=",")
 			print(CSVformat(issue.fields.reporter), end=",")
 
-			print(CSVformat(issue.fields.description), end=",")
-
 			print(CSVformat(issue.fields.duedate), end=",")
 			print(CSVformat(issue.fields.resolution), end=",")
 			print(CSVformat(issue.fields.resolutiondate), end=",")
@@ -132,11 +130,15 @@ for serverrow in serverrows:
 			for history in changelog.histories:
 				for item in history.items:
 #   again printing the key fields for each one (TODO: replace print statements with calls to logging.* later)
-					print('    ' + JIRATOSQLdatetimeformat(history.created) + ':   ' + str(history.author.name) + ' changed ' + item.field.upper() + ' from ' + str(item.fromString) + ' to ' + str(item.toString))
+#	since DESCRIPTION can sometimes get messy, only print the from and to values for fields other than DESCRIPTION
+					print('    ' + JIRATOSQLdatetimeformat(history.created) + ':   ' + str(history.author.name) + ' changed ' + item.field.upper(), end="")
+					if (item.field.upper() != "DESCRIPTION")
+						 print(' from ' + str(item.fromString)[:100] + ' to ' + str(item.toString)[:100], end="")
+					print()
 					tablecursor.execute('INSERT into dbo.jira_history values (' + str(serverrow.jira_server_id) + ',\'' + CSVformat(issue.fields.project) + '\',\'' + 
 																				  str(history.id) + '\',\'' + CSVformat(history.author.name) + '\',\'' + CSVformat(issue) + '\',\'' + JIRATOSQLdatetimeformat(history.created) + '\',\'' + 
-																				  CSVformat(item.field.upper()) + '\',\'' + CSVformat(str(item.fromString)) + '\',\'' + 
-																				  CSVformat(str(item.fromString)) + '\',\'' + CSVformat(str(item.to)) + '\',\''+CSVformat(str(item.toString)) + '\')')
+																				  CSVformat(item.field.upper()) + '\',\'' + CSVformat(str(item.fromString)[:100]) + '\',\'' + 
+																				  CSVformat(str(item.fromString)) + '\',\'' + CSVformat(str(item.to)) + '\',\''+CSVformat(str(item.toString) + '\')')
 #   and then insert it																				  
 					cnxn.commit()
 
