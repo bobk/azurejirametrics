@@ -137,8 +137,8 @@ for serverrow in serverrows:
 					print()
 					tablecursor.execute('INSERT into dbo.jira_history values (' + str(serverrow.jira_server_id) + ',\'' + CSVformat(issue.fields.project) + '\',\'' + 
 																				  str(history.id) + '\',\'' + CSVformat(history.author.name) + '\',\'' + CSVformat(issue) + '\',\'' + JIRATOSQLdatetimeformat(history.created) + '\',\'' + 
-																				  CSVformat(item.field.upper()) + '\',\'' + CSVformat(str(item.fromString)[:100]) + '\',\'' + 
-																				  CSVformat(str(item.fromString)) + '\',\'' + CSVformat(str(item.to)) + '\',\''+CSVformat(str(item.toString) + '\')')
+																				  CSVformat(item.field.upper()) + '\',\'' + CSVformat(str(item.fromString))[:500] + '\',\'' + 
+																				  CSVformat(str(item.fromString))[:500] + '\',\'' + CSVformat(str(item.to))[:500] + '\',\'' + CSVformat(str(item.toString))[:500] + '\')')
 #   and then insert it																				  
 					cnxn.commit()
 
