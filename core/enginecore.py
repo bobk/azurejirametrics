@@ -132,7 +132,7 @@ for serverrow in serverrows:
 #   again printing the key fields for each one (TODO: replace print statements with calls to logging.* later)
 #	since DESCRIPTION can sometimes get messy, only print the from and to values for fields other than DESCRIPTION
 					print('    ' + JIRATOSQLdatetimeformat(history.created) + ':   ' + str(history.author.name) + ' changed ' + item.field.upper(), end="")
-					if (item.field.upper() != "DESCRIPTION")
+					if (item.field.upper() != 'DESCRIPTION'):
 						print(' from ' + str(item.fromString)[:100] + ' to ' + str(item.toString)[:100], end="")
 					print()
 					tablecursor.execute('INSERT into dbo.jira_history values (' + str(serverrow.jira_server_id) + ',\'' + CSVformat(issue.fields.project) + '\',\'' + 
